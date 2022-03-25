@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import type { IContact } from "types";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { IContact, FormStatus } from "types";
 import type { RootState } from "store";
 import * as contactProvider from "providers/contact";
 
@@ -7,10 +7,12 @@ import * as contactProvider from "providers/contact";
 interface IContactState {
   list: IContact[];
   page: number;
+  formStatus: FormStatus;
 }
 const initialState: IContactState = {
   list: [],
   page: 0,
+  formStatus: FormStatus.NONE,
 };
 
 export const getContacts = createAsyncThunk(
@@ -43,11 +45,8 @@ export const contactSlice = createSlice({
   name: "contact",
   initialState,
   reducers: {
-    initContacts: (state) => {
-      return { list: [], page: 0 };
-    },
-    increasePage: (state) => {
-      state.page++;
+    updateFormStatus: (state, action: PayloadAction<FormStatus>) => {
+      state.formStatus = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -55,15 +54,32 @@ export const contactSlice = createSlice({
       state.list = action.payload;
     });
 
-    builder.addCase(addContact.fulfilled, (state, action) => {
-      state.list.push(action.payload);
-    });
+    // Add a Contact
+    builder
+      .addCase(addContact.fulfilled, (state, action) => {
+        state.list.push(action.payload);
+        state.formStatus = FormStatus.SUCCESS;
+      })
+      .addCase(addContact.pending, (state) => {
+        state.formStatus = FormStatus.PENDING;
+      })
+      .addCase(addContact.rejected, (state) => {
+        state.formStatus = FormStatus.FAILURE;
+      });
 
-    builder.addCase(updateContact.fulfilled, (state, action) => {
-      state.list = state.list.map((contact) =>
-        contact.id === action.payload.id ? action.payload : contact
-      );
-    });
+    builder
+      .addCase(updateContact.fulfilled, (state, action) => {
+        state.list = state.list.map((contact) =>
+          contact.id === action.payload.id ? action.payload : contact
+        );
+        state.formStatus = FormStatus.SUCCESS;
+      })
+      .addCase(updateContact.pending, (state) => {
+        state.formStatus = FormStatus.PENDING;
+      })
+      .addCase(updateContact.rejected, (state) => {
+        state.formStatus = FormStatus.FAILURE;
+      });
 
     builder.addCase(deleteContact.fulfilled, (state, action) => {
       state.list = state.list.filter(
@@ -73,7 +89,7 @@ export const contactSlice = createSlice({
   },
 });
 
-export const { initContacts, increasePage } = contactSlice.actions;
+export const { updateFormStatus } = contactSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectCount = (state: RootState) => state.contacts;

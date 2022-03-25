@@ -29,3 +29,10 @@ export interface IAPISuccessResponse {
 export interface IAPIErrorResponse {
   details: any;
 }
+
+export enum FormStatus {
+  NONE,
+  PENDING,
+  SUCCESS,
+  FAILURE,
+}

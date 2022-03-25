@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { IContact } from 'types';
-import { useAppDispatch } from 'store/hooks';
-import { addContact, updateContact } from 'store/contact/slice';
+import { IContact, FormStatus } from 'types';
+import { useAppSelector, useAppDispatch } from 'store/hooks';
+import { addContact, updateContact, updateFormStatus } from 'store/contact/slice';
 import { fileToDataUrl } from 'utils';
 
 interface IContactFormProps {
@@ -13,6 +13,7 @@ interface IContactFormProps {
 
 export const ContactForm: React.FC<IContactFormProps> = ({ contact }) => {
   const navigate = useNavigate();
+  const formStatus = useAppSelector(state => state.contacts.formStatus)
   const { register, formState: { errors }, handleSubmit, setValue } = useForm()
   const dispatch = useAppDispatch();
   const [avatarFile, setAvatarFile] = useState<File>()
@@ -24,9 +25,18 @@ export const ContactForm: React.FC<IContactFormProps> = ({ contact }) => {
       const keys: Array<keyof IContact> = ['name', 'lastName', 'email', 'phoneNumber', 'age', 'linkToWebsite', 'tags'];
       keys.forEach((key) => setValue(key, contact[key]));
     }
+    dispatch(updateFormStatus(FormStatus.NONE)); // initialize form status
 
     return () => { }
   }, [contact, setValue]);
+
+  // redirect if the form status is SUCCESS.
+  useEffect(() => {
+    if (formStatus === FormStatus.SUCCESS) {
+      dispatch(updateFormStatus(FormStatus.NONE));
+      navigate('/contacts');
+    }
+  }, [formStatus]);
 
   const handleOnSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
@@ -52,7 +62,6 @@ export const ContactForm: React.FC<IContactFormProps> = ({ contact }) => {
     } else {
       dispatch(addContact(formData))
     }
-    navigate('/contacts');
   })
 
   return (
