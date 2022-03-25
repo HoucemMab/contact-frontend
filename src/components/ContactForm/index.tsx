@@ -34,7 +34,7 @@ export const ContactForm: React.FC<IContactFormProps> = ({ contact }) => {
   useEffect(() => {
     if (formStatus === FormStatus.SUCCESS) {
       dispatch(updateFormStatus(FormStatus.NONE));
-      navigate('/contacts');
+      navigate('/');
     }
   }, [formStatus]);
 

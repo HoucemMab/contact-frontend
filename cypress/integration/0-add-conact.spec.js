@@ -31,8 +31,7 @@ describe("Add Contact", () => {
     cy.get("[data-testid=input-linkToWebsite]").type("https://google.com");
     cy.get("[data-testid=input-tags]").type("aaa,test,cypress");
     cy.get("[type=submit").click();
-    cy.wait(1000);
 
-    cy.url().should("eq", `${baseUrl}/contacts`); //.to.equal(`${baseUrl}/contacts`);
+    cy.url().should("eq", baseUrl + "/");
   });
 });
