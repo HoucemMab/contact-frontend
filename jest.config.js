@@ -2,6 +2,7 @@
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "jsdom",
+  testPathIgnorePatterns: ["<rootDir>/cypress"],
   moduleDirectories: ["node_modules", "src"],
   moduleNameMapper: {
     "\\.(css|scss)$": "<rootDir>/src/__tests__/__mocks__/styleMock.js",
