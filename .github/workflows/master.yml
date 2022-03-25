@@ -22,7 +22,8 @@ jobs:
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
-          args: deploy --dir=build --production
+          args: deploy --dir=build --prod
+          env_file: ".env.production"
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "contact-management-keyko"
           heroku_email: "alerk.star@gmail.com"
