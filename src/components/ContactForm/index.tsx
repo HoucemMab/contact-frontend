@@ -28,7 +28,7 @@ export const ContactForm: React.FC<IContactFormProps> = ({ contact }) => {
     dispatch(updateFormStatus(FormStatus.NONE)); // initialize form status
 
     return () => { }
-  }, [contact, setValue]);
+  }, [contact, setValue, dispatch]);
 
   // redirect if the form status is SUCCESS.
   useEffect(() => {
@@ -36,7 +36,7 @@ export const ContactForm: React.FC<IContactFormProps> = ({ contact }) => {
       dispatch(updateFormStatus(FormStatus.NONE));
       navigate('/');
     }
-  }, [formStatus]);
+  }, [formStatus, navigate, dispatch]);
 
   const handleOnSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
