@@ -3,9 +3,9 @@ const baseUrl = Cypress.env("base_url");
 describe("Update Contact", () => {
   it("creates a contact", () => {
     cy.visit(`${baseUrl}/contacts/add`);
-    cy.get("[data-testid=input-name]").type("AAA");
+    cy.get("[data-testid=input-name]").type("UpdateMe");
     cy.get("[data-testid=input-lastName]").type("Test");
-    cy.get("[data-testid=input-email]").type("aaa@test.com");
+    cy.get("[data-testid=input-email]").type("update.me@test.com");
     cy.get("[data-testid=input-phoneNumber]").type("1234567890");
     cy.get("[data-testid=input-age]").type(25);
     cy.get("[data-testid=input-tags]").type("aaa,test,cypress");
