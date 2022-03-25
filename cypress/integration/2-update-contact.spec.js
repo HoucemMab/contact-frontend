@@ -3,6 +3,7 @@ const baseUrl = Cypress.env("base_url");
 describe("Update Contact", () => {
   it("should submit form", () => {
     cy.visit(baseUrl);
+    cy.reload(); // reload browner to initialize redux
 
     cy.get("[data-testid=edit-icon]").first().click();
 

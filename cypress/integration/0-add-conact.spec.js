@@ -13,13 +13,14 @@ describe("Add Contact", () => {
     cy.contains("Age is required!");
   });
 
-  it("should show avatar image on select file", () => {
+  it("should show avatar image on selecting file", () => {
     cy.visit(`${baseUrl}/contacts/add`);
     cy.get("[data-testid=input-avatarFile]").attachFile("avatar.gif");
     cy.get("[data-testid=img-avatar]").should("exist");
   });
 
   it("should submit form", () => {
+    // enter all information
     cy.get("[data-testid=input-name]").type("AAA");
     cy.get("[data-testid=input-lastName]").type("Test");
     cy.get("[data-testid=input-email]").type("aaa@test.com");
@@ -30,6 +31,7 @@ describe("Add Contact", () => {
     cy.get("[data-testid=input-linkToWebsite]").type("https://google.com");
     cy.get("[data-testid=input-tags]").type("aaa,test,cypress");
     cy.get("[type=submit").click();
+    cy.wait(1000);
 
     cy.url().should("eq", `${baseUrl}/contacts`); //.to.equal(`${baseUrl}/contacts`);
   });

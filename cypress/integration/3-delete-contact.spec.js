@@ -1,6 +1,6 @@
 const baseUrl = Cypress.env("base_url");
 
-describe("Update Contact", () => {
+describe("Delete Contact", () => {
   let lenBefore;
 
   it("get the number of contacts before delete", () => {
