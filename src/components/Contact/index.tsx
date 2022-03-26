@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { IContact } from 'types';
-import { useAppDispatch } from 'store/hooks';
-import { deleteContact } from 'store/contact/slice';
+import { IContact, FormStatus } from 'types';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { deleteContact, updateFormStatus } from 'store/contact/slice';
 import { ReactComponent as EditIcon } from 'assets/edit.svg';
 import { ReactComponent as TrashIcon } from 'assets/trash.svg';
 import styles from './index.module.scss';
@@ -22,6 +22,20 @@ interface IContactListProps {
 export const ContactList: React.FC<IContactListProps> = ({ contacts }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const requestStatus = useAppSelector(state => state.contacts.formStatus);
+
+  useEffect(() => {
+    if (requestStatus === FormStatus.SUCCESS) {
+      dispatch(updateFormStatus(FormStatus.NONE));
+      toast.success('Deleted');
+    } else if (requestStatus === FormStatus.FAILURE) {
+      dispatch(updateFormStatus(FormStatus.NONE));
+      toast.error('Failed to delete contact');
+    }
+
+    return () => { }
+  }, [requestStatus]);
+
 
   const handleOnUpdate = (idx: number) => {
     navigate(`/contacts/${idx}`)
@@ -72,7 +86,6 @@ export const ContactList: React.FC<IContactListProps> = ({ contacts }) => {
 }
 
 export const ContactItem: React.FC<IContactItemProps> = ({ contact, onDelete, onUpdate }) => {
-
   return (
     <tr>
       <td>

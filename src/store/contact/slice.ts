@@ -81,11 +81,16 @@ export const contactSlice = createSlice({
         state.formStatus = FormStatus.FAILURE;
       });
 
-    builder.addCase(deleteContact.fulfilled, (state, action) => {
-      state.list = state.list.filter(
-        (contact) => contact.id !== action.payload.id
-      );
-    });
+    builder
+      .addCase(deleteContact.fulfilled, (state, action) => {
+        state.list = state.list.filter(
+          (contact) => contact.id !== action.payload.id
+        );
+        state.formStatus = FormStatus.SUCCESS;
+      })
+      .addCase(deleteContact.rejected, (state, action) => {
+        state.formStatus = FormStatus.FAILURE;
+      });
   },
 });
 
