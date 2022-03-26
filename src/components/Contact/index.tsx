@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import { IContact } from 'types';
 import { useAppDispatch } from 'store/hooks';
 import { deleteContact } from 'store/contact/slice';
@@ -65,6 +66,7 @@ export const ContactList: React.FC<IContactListProps> = ({ contacts }) => {
           </div>
         )
       }
+      <ToastContainer />
     </div>
   )
 }
