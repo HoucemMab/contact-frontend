@@ -12,7 +12,7 @@ export const HomePage: React.FC = () => {
   }
 
   return (
-    <div className="">
+    <>
       <div className="flex justify-end">
         <button
           className="bg-primary-light text-light px-6 py-3 rounded-lg
@@ -25,6 +25,6 @@ export const HomePage: React.FC = () => {
         </button>
       </div>
       <ContactList contacts={contacts} />
-    </div>
+    </>
   )
 }

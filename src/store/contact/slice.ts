@@ -18,27 +18,27 @@ const initialState: IContactState = {
 export const getContacts = createAsyncThunk(
   "/contacts/getContacts",
   // limit = 50 assumes to loading all contacts on loading.
-  ({ page = 1, limit = 50 }: { page?: number; limit?: number }, thunkAPI) => {
+  ({ page = 1, limit = 50 }: { page?: number; limit?: number }) => {
     return contactProvider.getContactsRequest(page, limit);
   }
 );
 
 export const addContact = createAsyncThunk(
   "/contacts/createContact",
-  (contactInfo: FormData, thunkAPI) => {
+  (contactInfo: FormData) => {
     return contactProvider.addContactRequest(contactInfo);
   }
 );
 
 export const updateContact = createAsyncThunk(
   "/contacts/updateContact",
-  ({ id, data }: { id: number; data: FormData }, thunkAPI) =>
+  ({ id, data }: { id: number; data: FormData }) =>
     contactProvider.updateContactRequest(id, data)
 );
 
 export const deleteContact = createAsyncThunk(
   "contacts/deleteContact",
-  (id: number, thunkAPI) => contactProvider.deleteContactRequest(id)
+  (id: number) => contactProvider.deleteContactRequest(id)
 );
 
 export const contactSlice = createSlice({
@@ -51,13 +51,13 @@ export const contactSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getContacts.fulfilled, (state, action) => {
-      state.list = action.payload;
+      state.list = action.payload as IContact[];
     });
 
     // Add a Contact
     builder
       .addCase(addContact.fulfilled, (state, action) => {
-        state.list.push(action.payload);
+        state.list.push(action.payload as IContact);
         state.formStatus = FormStatus.SUCCESS;
       })
       .addCase(addContact.pending, (state) => {
@@ -69,8 +69,9 @@ export const contactSlice = createSlice({
 
     builder
       .addCase(updateContact.fulfilled, (state, action) => {
+        const _contact = action.payload as IContact;
         state.list = state.list.map((contact) =>
-          contact.id === action.payload.id ? action.payload : contact
+          contact.id === _contact.id ? _contact : contact
         );
         state.formStatus = FormStatus.SUCCESS;
       })
@@ -81,11 +82,16 @@ export const contactSlice = createSlice({
         state.formStatus = FormStatus.FAILURE;
       });
 
-    builder.addCase(deleteContact.fulfilled, (state, action) => {
-      state.list = state.list.filter(
-        (contact) => contact.id !== action.payload.id
-      );
-    });
+    builder
+      .addCase(deleteContact.fulfilled, (state, action) => {
+        state.list = state.list.filter(
+          (contact) => contact.id !== (action.payload as IContact).id
+        );
+        state.formStatus = FormStatus.SUCCESS;
+      })
+      .addCase(deleteContact.rejected, (state, action) => {
+        state.formStatus = FormStatus.FAILURE;
+      });
   },
 });
 

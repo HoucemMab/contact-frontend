@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { ToastContainer, toast } from 'react-toastify';
 import { IContact, FormStatus } from 'types';
 import { useAppSelector, useAppDispatch } from 'store/hooks';
 import { addContact, updateContact, updateFormStatus } from 'store/contact/slice';
 import { fileToDataUrl } from 'utils';
+import "react-toastify/dist/ReactToastify.css";
 
 interface IContactFormProps {
   contact?: IContact;
@@ -34,8 +36,16 @@ export const ContactForm: React.FC<IContactFormProps> = ({ contact }) => {
   useEffect(() => {
     if (formStatus === FormStatus.SUCCESS) {
       dispatch(updateFormStatus(FormStatus.NONE));
-      navigate('/');
+      toast.success('Success');
+      setTimeout(() => {
+        navigate('/');
+      }, 2000)
     }
+    if (formStatus === FormStatus.FAILURE) {
+      dispatch(updateFormStatus(FormStatus.NONE));
+      toast.error('Failure');
+    }
+
   }, [formStatus, navigate, dispatch]);
 
   const handleOnSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,6 +133,7 @@ export const ContactForm: React.FC<IContactFormProps> = ({ contact }) => {
           </button>
         </div>
       </form>
+      <ToastContainer />
     </div>
   )
 }
