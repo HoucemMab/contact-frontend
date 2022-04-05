@@ -18,27 +18,27 @@ const initialState: IContactState = {
 export const getContacts = createAsyncThunk(
   "/contacts/getContacts",
   // limit = 50 assumes to loading all contacts on loading.
-  ({ page = 1, limit = 50 }: { page?: number; limit?: number }, thunkAPI) => {
+  ({ page = 1, limit = 50 }: { page?: number; limit?: number }) => {
     return contactProvider.getContactsRequest(page, limit);
   }
 );
 
 export const addContact = createAsyncThunk(
   "/contacts/createContact",
-  (contactInfo: FormData, thunkAPI) => {
+  (contactInfo: FormData) => {
     return contactProvider.addContactRequest(contactInfo);
   }
 );
 
 export const updateContact = createAsyncThunk(
   "/contacts/updateContact",
-  ({ id, data }: { id: number; data: FormData }, thunkAPI) =>
+  ({ id, data }: { id: number; data: FormData }) =>
     contactProvider.updateContactRequest(id, data)
 );
 
 export const deleteContact = createAsyncThunk(
   "contacts/deleteContact",
-  (id: number, thunkAPI) => contactProvider.deleteContactRequest(id)
+  (id: number) => contactProvider.deleteContactRequest(id)
 );
 
 export const contactSlice = createSlice({

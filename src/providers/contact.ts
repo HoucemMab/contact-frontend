@@ -1,4 +1,4 @@
-import type { IContact, IAPISuccessResponse } from "types";
+import type { IAPISuccessResponse } from "types";
 import { restAPI } from "./config";
 
 const getData = (res: any) => (res.data as IAPISuccessResponse).data;

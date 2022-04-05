@@ -27,7 +27,7 @@ export const ContactList: React.FC<IContactListProps> = ({ contacts }) => {
     }
 
     return () => { }
-  }, [requestStatus]);
+  }, [requestStatus, dispatch]);
 
 
   const handleOnUpdate = (idx: number) => {
