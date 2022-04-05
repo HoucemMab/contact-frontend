@@ -51,13 +51,13 @@ export const contactSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getContacts.fulfilled, (state, action) => {
-      state.list = action.payload;
+      state.list = action.payload as IContact[];
     });
 
     // Add a Contact
     builder
       .addCase(addContact.fulfilled, (state, action) => {
-        state.list.push(action.payload);
+        state.list.push(action.payload as IContact);
         state.formStatus = FormStatus.SUCCESS;
       })
       .addCase(addContact.pending, (state) => {
@@ -69,8 +69,9 @@ export const contactSlice = createSlice({
 
     builder
       .addCase(updateContact.fulfilled, (state, action) => {
+        const _contact = action.payload as IContact;
         state.list = state.list.map((contact) =>
-          contact.id === action.payload.id ? action.payload : contact
+          contact.id === _contact.id ? _contact : contact
         );
         state.formStatus = FormStatus.SUCCESS;
       })
@@ -84,7 +85,7 @@ export const contactSlice = createSlice({
     builder
       .addCase(deleteContact.fulfilled, (state, action) => {
         state.list = state.list.filter(
-          (contact) => contact.id !== action.payload.id
+          (contact) => contact.id !== (action.payload as IContact).id
         );
         state.formStatus = FormStatus.SUCCESS;
       })

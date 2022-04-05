@@ -8,8 +8,7 @@ export function getContactsRequest(page: number, limit: number) {
     .get<IAPISuccessResponse>("/contacts", {
       params: { limit, page },
     })
-    .then(getData)
-    .then((data) => data as IContact[]);
+    .then(getData);
 }
 
 export function addContactRequest(data: FormData) {
@@ -17,8 +16,7 @@ export function addContactRequest(data: FormData) {
     .post<IAPISuccessResponse>("/contacts", data, {
       headers: { "Content-Type": "multipart/form-data" },
     })
-    .then(getData)
-    .then((data) => data as IContact);
+    .then(getData);
 }
 
 export function updateContactRequest(id: number, data: FormData) {
@@ -26,13 +24,9 @@ export function updateContactRequest(id: number, data: FormData) {
     .patch<IAPISuccessResponse>(`/contacts/${id}`, data, {
       headers: { "Content-Type": "multipart/form-data" },
     })
-    .then(getData)
-    .then((data) => data as IContact);
+    .then(getData);
 }
 
 export function deleteContactRequest(id: number) {
-  return restAPI
-    .delete<IAPISuccessResponse>(`/contacts/${id}`)
-    .then(getData)
-    .then((data) => data as IContact);
+  return restAPI.delete<IAPISuccessResponse>(`/contacts/${id}`).then(getData);
 }
