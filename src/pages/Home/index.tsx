@@ -1,15 +1,33 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from 'store/hooks';
-import { ContactList } from 'components/Contact';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ContactList } from "components/Contact";
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
-  const contacts = useAppSelector(state => state.contacts.list);
+  const [contacts, setContacts] = useState([]);
+
+  useEffect(() => {
+    // Fetch contacts from the API when the component mounts
+    const fetchContacts = async () => {
+      try {
+        const response = await fetch("http://localhost:3005/contacts");
+        if (!response.ok) {
+          throw new Error("Failed to fetch contacts");
+        }
+        const data = await response.json();
+        console.log(data);
+        setContacts(data);
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+      }
+    };
+
+    fetchContacts();
+  }, []);
 
   const handleOnAddContact = () => {
-    navigate('/contacts/add');
-  }
+    navigate("/contacts/add");
+  };
 
   return (
     <>
@@ -26,5 +44,5 @@ export const HomePage: React.FC = () => {
       </div>
       <ContactList contacts={contacts} />
     </>
-  )
-}
+  );
+};

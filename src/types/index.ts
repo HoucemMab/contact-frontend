@@ -1,4 +1,5 @@
 export interface IContactBase {
+  _id: string;
   name: string;
   lastName: string;
   phoneNumber: string;
@@ -6,7 +7,7 @@ export interface IContactBase {
   age: number;
   avatar?: string;
   linkToWebsite?: string;
-  tags: string; // comma-separated string
+  tags: string[]; // comma-separated string
 }
 
 export interface IContact extends IContactBase {

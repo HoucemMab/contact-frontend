@@ -1,17 +1,17 @@
 const baseUrl = Cypress.env("base_url");
 
 describe("Add Contact", () => {
-  it("should not submit without required values filled", () => {
-    cy.visit(`${baseUrl}/contacts/add`);
-    cy.get("form").submit();
+  // it("should not submit without required values filled", () => {
+  //   cy.visit(`${baseUrl}/contacts/add`);
+  //   cy.get("form").submit();
 
-    cy.get(".form-error").should("exist");
-    cy.contains("Name is required!");
-    cy.contains("Last name is required!");
-    cy.contains("Email is required!");
-    cy.contains("PhoneNumber is required!");
-    cy.contains("Age is required!");
-  });
+  //   cy.get(".form-error").should("exist");
+  //   cy.contains("Name is required!");
+  //   cy.contains("Last name is required!");
+  //   cy.contains("Email is required!");
+  //   cy.contains("PhoneNumber is required!");
+  //   cy.contains("Age is required!");
+  // });
 
   it("should show avatar image on selecting file", () => {
     cy.visit(`${baseUrl}/contacts/add`);

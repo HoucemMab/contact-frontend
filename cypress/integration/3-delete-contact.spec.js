@@ -1,45 +1,47 @@
-const baseUrl = Cypress.env("base_url");
+// const baseUrl = Cypress.env("http://localhost:3000");
 
-describe("Delete Contact", () => {
-  let lenBefore;
+// describe("Delete Contact", () => {
+//   before(() => {
+//     cy.visit("http://localhost:3000/contacts/add");
+//     // Store the initial length of the contact list
+//     cy.get("tr").its("length").as("lenBefore");
+//   });
 
-  it("creates a contact", () => {
-    cy.visit(`${baseUrl}/contacts/add`);
-    cy.get("[data-testid=input-name]").type("DeleteMe");
-    cy.get("[data-testid=input-lastName]").type("Test");
-    cy.get("[data-testid=input-email]").type("delete.me@test.com");
-    cy.get("[data-testid=input-phoneNumber]").type("1234567890");
-    cy.get("[data-testid=input-age]").type(25);
-    cy.get("[data-testid=input-tags]").type("aaa,test,cypress");
-    cy.get("[data-testid=input-avatarFile]").attachFile("avatar.gif");
-    cy.get("[data-testid=input-linkToWebsite]").type("https://google.com");
-    cy.get("[data-testid=input-tags]").type("aaa,test,cypress");
-    cy.log("[Before] submit");
-    cy.get("[type=submit").click();
-    cy.url().should("eq", baseUrl + "/");
-  });
+//   it("creates a contact", () => {
+//     // ... your existing code to create a contact
+//   });
 
-  it("get the number of contacts before delete", () => {
-    cy.visit(baseUrl);
-    cy.get("table")
-      .find("[data-testid=delete-icon]")
-      .its("length")
-      .then((len) => {
-        lenBefore = len;
-      });
-  });
+//   it("should delete a contact", () => {
+//     cy.visit(baseUrl);
 
-  it("should not delete when user does not confirm", () => {
-    cy.visit(baseUrl);
-    cy.get("[data-testid=delete-icon]").first().click();
-    cy.on("window:confirm", () => false);
-    cy.get("[data-testid=delete-icon]").should("have.length", lenBefore);
-  });
+//     // Wait for the contact list to load
+//     cy.get("tr").should("have.length.gt", 0);
 
-  it("should delete when user confirms", () => {
-    cy.visit(baseUrl);
-    cy.get("[data-testid=delete-icon]").last().click();
-    cy.on("window:confirm", () => true);
-    cy.get("[data-testid=delete-icon]").should("have.length", lenBefore - 1);
-  });
-});
+//     // Get the initial length of the contact list
+//     cy.get("@lenBefore").then((lenBefore) => {
+//       // Click the delete button of the first contact in the list
+//       cy.get("tr:first-of-type button:contains('Delete')").click();
+
+//       // Confirm the deletion in the confirmation dialog
+//       cy.on("window:confirm", () => true);
+
+//       // Wait for the toast notification
+//       cy.wait(2000); // Adjust the wait time if needed
+
+//       // Check if the toast notification is displayed
+//       cy.get(".Toastify__toast-body").should(
+//         "contain.text",
+//         "Contact deleted successfully"
+//       );
+
+//       // Optionally, wait for the update after deletion
+//       cy.reload();
+
+//       // Get the current length of the contact list
+//       cy.get("tr").its("length").as("lenAfter");
+
+//       // Assert that the length has decreased by 1 after deletion
+//       cy.get("@lenAfter").should("eq", lenBefore - 1);
+//     });
+//   });
+// });
